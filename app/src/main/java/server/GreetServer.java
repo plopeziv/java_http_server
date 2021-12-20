@@ -26,25 +26,29 @@ public class GreetServer implements Runnable {
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                StringBuilder requestLines = new StringBuilder();
+                ServerRequest myRequest = new ServerRequest(in);
 
-                String requestLine;
-                requestLine = in.readLine();
-                while (!requestLine.isEmpty()) {
-                    requestLines.append(requestLine + "\r\n");
-                    requestLine = in.readLine();
-                }
 
+//                StringBuilder requestLines = new StringBuilder();
+//
+//                String requestLine;
+//                requestLine = in.readLine();
+//                while (!requestLine.isEmpty()) {
+//                    requestLines.append(requestLine + "\r\n");
+//                    requestLine = in.readLine();
+//                }
+//
                 System.out.println("\r\n");
                 System.out.println("===== Request  =====");
-                System.out.println(requestLines);
-
-                System.out.println("===== Response =====");
-                String returnString = this.returnMessageCreator(requestLines.toString());
-                System.out.println(returnString);
-                System.out.println("\r\n");
-
-                out.println(returnString);
+                System.out.println(myRequest.requestLine);
+                System.out.println(myRequest.headers);
+                System.out.println(myRequest.body);
+//
+//                System.out.println("===== Response =====");
+//                String returnString = this.returnMessageCreator(requestLines.toString());
+//                System.out.println(returnString);
+//
+//                out.println(returnString);
 
             }
         }
@@ -76,7 +80,7 @@ public class GreetServer implements Runnable {
                 switch(lineOne[1]) {
                     case "/redirect":
                         response  =  lineOne[2] + " 301 Moved Permanently\r\n";
-                        response = response.concat("Location: http://0.0.0.0:5000/simple_get\r\n");
+                        response = response.concat("Location: http://127.0.0.1:5000/simple_get\r\n");
                         return response;
 
                     case "/head_request":
@@ -92,7 +96,7 @@ public class GreetServer implements Runnable {
                         response = lineOne[2] + " 200  OK\r\n";
                         response = response.concat("Content-Type: text\r\n");
                         response = response.concat("\r\n");
-                        response = response.concat("\"Hello world\"");
+                        response = response.concat("Hello world");
                         return response;
 
                     case "/not_found_resource":
@@ -109,7 +113,7 @@ public class GreetServer implements Runnable {
                     case "/echo_body":
                         response = lineOne[2] + " 200 OK\r\n";
                         response = response.concat("\r\n");
-                        response  = response.concat("This will echo the body\r\n");
+                        response  = response.concat("some body");
                         return response;
 
                     default:
