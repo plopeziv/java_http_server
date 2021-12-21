@@ -19,7 +19,7 @@ public class ServerRequest {
 
             requestLine = this.createRequestLine(requestLines);
             headers  = this.createHeaders(requestLines);
-            body = "This is a body";
+            body = this.createBody(this.headers);
 
     }
 
@@ -35,6 +35,18 @@ public class ServerRequest {
         return requestLines;
     }
 
+    public HashMap<String, String> createRequestLine(String requestLines){
+        HashMap<String, String> requestLine = new HashMap<>();
+
+        String[] stringRequestLine = requestLines.split("\r\n");
+        stringRequestLine = stringRequestLine[0].split(" ");
+
+        requestLine.put("Method", stringRequestLine[0]);
+        requestLine.put("Path",stringRequestLine[1]);
+        requestLine.put("HTTPVersion", stringRequestLine[2]);
+
+        return requestLine;
+    }
 
     public HashMap<String, String> createHeaders(String requestLines){
         HashMap<String, String> headers = new HashMap<>();
@@ -49,16 +61,13 @@ public class ServerRequest {
         return headers;
     }
 
-    public HashMap<String, String> createRequestLine(String requestLines){
-        HashMap<String, String> requestLine = new HashMap<>();
-
-        String[] stringRequestLine = requestLines.split("\r\n");
-        stringRequestLine = stringRequestLine[0].split(" ");
-
-        requestLine.put("Method", stringRequestLine[0]);
-        requestLine.put("Path",stringRequestLine[1]);
-        requestLine.put("HTTPVersion", stringRequestLine[2]);
-
-        return requestLine;
+    public String createBody(HashMap headers){
+        String var = (String) headers.get("Content-Length");
+        if (Integer.parseInt(var.trim()) != 0){
+            return "This is a body";
+        } else{
+            return "";
+        }
     }
+
 }
