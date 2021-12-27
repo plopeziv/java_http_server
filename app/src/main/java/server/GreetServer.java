@@ -3,6 +3,7 @@
  */
 package server;
 import java.net.*;
+import java.util.*;
 import java.io.*;
 
 public class GreetServer implements Runnable {
@@ -10,10 +11,19 @@ public class GreetServer implements Runnable {
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+
     int portNumber;
+    ArrayList<String> routeList = new ArrayList<>();
 
     public GreetServer(int port){
         this.portNumber = port;
+
+        routeList.add("/simple_get");
+        routeList.add("/simple_get_with_body");
+        routeList.add("/head_request");
+        routeList.add("/redirect");
+        routeList.add("/method_options");
+        routeList.add("/method_options2");
     }
 
     public void start(int port) throws IOException {
@@ -28,27 +38,19 @@ public class GreetServer implements Runnable {
 
                 ServerRequest myRequest = new ServerRequest(in);
 
-
-//                StringBuilder requestLines = new StringBuilder();
-//
-//                String requestLine;
-//                requestLine = in.readLine();
-//                while (!requestLine.isEmpty()) {
-//                    requestLines.append(requestLine + "\r\n");
-//                    requestLine = in.readLine();
-//                }
-//
                 System.out.println("\r\n");
                 System.out.println("===== Request  =====");
                 System.out.println(myRequest.requestLine);
                 System.out.println(myRequest.headers);
                 System.out.println(myRequest.body);
 //
-//                System.out.println("===== Response =====");
+                System.out.println("===== Response =====");
+
+                ServerResponse myResponse = new ServerResponse(myRequest, this.routeList);
 //                String returnString = this.returnMessageCreator(requestLines.toString());
-//                System.out.println(returnString);
+                System.out.println(myResponse.response);
 //
-//                out.println(returnString);
+                out.println(myResponse.response);
 
             }
         }
@@ -135,7 +137,7 @@ public class GreetServer implements Runnable {
                         response = "Unexpected value: " + lineOne[1] +"\r\n";
                         return response;
                 }
-                
+
             case "OPTIONS":
                 switch(lineOne[1]){
                     case "/method_options":
