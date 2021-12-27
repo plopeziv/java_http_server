@@ -13,17 +13,9 @@ public class GreetServer implements Runnable {
     private BufferedReader in;
 
     int portNumber;
-    ArrayList<String> routeList = new ArrayList<>();
 
     public GreetServer(int port){
         this.portNumber = port;
-
-        routeList.add("/simple_get");
-        routeList.add("/simple_get_with_body");
-        routeList.add("/head_request");
-        routeList.add("/redirect");
-        routeList.add("/method_options");
-        routeList.add("/method_options2");
     }
 
     public void start(int port) throws IOException {
@@ -43,14 +35,6 @@ public class GreetServer implements Runnable {
                 System.out.println(myRequest.requestLine);
                 System.out.println(myRequest.headers);
                 System.out.println(myRequest.body);
-//
-                System.out.println("===== Response =====");
-
-                ServerResponse myResponse = new ServerResponse(myRequest, this.routeList);
-//                String returnString = this.returnMessageCreator(requestLines.toString());
-                System.out.println(myResponse.response);
-//
-                out.println(myResponse.response);
 
             }
         }
@@ -70,95 +54,5 @@ public class GreetServer implements Runnable {
         out.close();
         clientSocket.close();
         serverSocket.close();
-    }
-
-    private String returnMessageCreator (String requestLines) {
-        String lineBreak [] = requestLines.split("\r\n");
-        String lineOne [] = lineBreak[0].split(" ");
-        String response;
-
-        switch(lineOne[0]){
-            case "GET":
-                switch(lineOne[1]) {
-                    case "/redirect":
-                        response  =  lineOne[2] + " 301 Moved Permanently\r\n";
-                        response = response.concat("Location: http://127.0.0.1:5000/simple_get\r\n");
-                        return response;
-
-                    case "/head_request":
-                        response  = lineOne[2] + " 405 Method Not Allowed\r\n";
-                        response = response.concat("Allow: HEAD, OPTIONS\r\n");
-                        return response;
-
-                    case "/simple_get":
-                        response  = lineOne[2] + " 200 OK\r\n";
-                        return response;
-
-                    case "/simple_get_with_body":
-                        response = lineOne[2] + " 200  OK\r\n";
-                        response = response.concat("Content-Type: text\r\n");
-                        response = response.concat("\r\n");
-                        response = response.concat("Hello world");
-                        return response;
-
-                    case "/not_found_resource":
-                        response = lineOne[2] + " 404 Not Found\r\n";
-                        return response;
-
-                    default:
-                        response = "Unexpected value: " + lineOne[1] + "\r\n";
-                        return response;
-                }
-
-            case "POST":
-                switch(lineOne[1]){
-                    case "/echo_body":
-                        response = lineOne[2] + " 200 OK\r\n";
-                        response = response.concat("\r\n");
-                        response  = response.concat("some body");
-                        return response;
-
-                    default:
-                        response = "Unexpected value: " + lineOne[1] + "\r\n";
-                        return response;
-                }
-
-            case  "HEAD":
-                switch (lineOne[1]){
-                    case "/simple_get":
-                        response = lineOne[2] + " 200 OK\r\n";
-                        return response;
-
-                    case "/head_request":
-                        response = lineOne[2] + " 200 OK\r\n";
-                        return response;
-
-                    default:
-                        response = "Unexpected value: " + lineOne[1] +"\r\n";
-                        return response;
-                }
-
-            case "OPTIONS":
-                switch(lineOne[1]){
-                    case "/method_options":
-                        response = lineOne[2] + " 200 OK\r\n";
-                        response = response.concat("Allow: GET, HEAD, OPTIONS\r\n");
-                        return response;
-
-                    case "/method_options2":
-                        response = lineOne[2] + " 200 OK\r\n";
-                        response = response.concat("Allow: GET, HEAD, OPTIONS, PUT, POST\r\n");
-                        return response;
-
-                    default:
-                        response = "Unexpected value: " + lineOne[1] +"\r\n";
-                        return response;
-                }
-
-            default:
-                response = "Unexpected value: " + lineOne[0] +"\r\n";
-                return response;
-        }
-
     }
 }
