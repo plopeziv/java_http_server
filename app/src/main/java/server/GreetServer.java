@@ -24,6 +24,7 @@ public class GreetServer implements Runnable {
         routeList.add("/redirect");
         routeList.add("/method_options");
         routeList.add("/method_options2");
+        routeList.add("/echo_body");
     }
 
     public void start(int port) throws IOException {

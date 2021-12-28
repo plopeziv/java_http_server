@@ -50,7 +50,14 @@ public class ServerResponse {
                 }
 
             case "POST":
-                return  "This is a post";
+                if (this.routes.contains(requestObject.requestLine.get("Path"))) {
+                    String buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
+                    buildResponse += "\r\n";
+                    buildResponse += "This is a post";
+                    return buildResponse;
+                } else{
+                    return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
+                }
 
             case "OPTIONS":
                 if (this.routes.contains(requestObject.requestLine.get("Path"))){
