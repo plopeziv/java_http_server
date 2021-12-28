@@ -14,15 +14,17 @@ public class ServerResponse {
         response = routeResponse(request);
     }
 
-    public String routeResponse(ServerRequest requestObject) {
+    private String routeResponse(ServerRequest requestObject) {
         String method = (String) requestObject.requestLine.get("Method");
-        switch (method){
-            case "GET":
-                if (this.routes.contains(requestObject.requestLine.get("Path"))){
-                    String route = (String) requestObject.requestLine.get("Path");
-                    switch(route){
+        String  route = (String) requestObject.requestLine.get("Path");
+        String buildResponse;
+
+        if (this.routes.contains((route))) {
+            switch (method) {
+                case "GET":
+                    switch (route) {
                         case "/redirect":
-                            String buildResponse = requestObject.requestLine.get("HTTPVersion") + " 301 Moved Permanently\r\n";
+                            buildResponse = requestObject.requestLine.get("HTTPVersion") + " 301 Moved Permanently\r\n";
                             buildResponse += "Location: http://127.0.0.1:5000/simple_get\r\n";
                             return buildResponse;
 
@@ -35,37 +37,25 @@ public class ServerResponse {
                             buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
                             buildResponse += "\r\n";
                             buildResponse += "Hello World";
-                            return   buildResponse;
-
+                            return buildResponse;
                     }
-                } else{
-                    return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
-                }
 
-            case "HEAD":
-                if (this.routes.contains(requestObject.requestLine.get("Path"))){
+                case "HEAD":
                     return requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
-                }else{
-                    return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
-                }
 
-            case "POST":
-                if (this.routes.contains(requestObject.requestLine.get("Path"))) {
-                    String buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
+
+                case "POST":
+                    buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
                     buildResponse += "\r\n";
                     buildResponse += "This is a post";
                     return buildResponse;
-                } else{
-                    return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
-                }
 
-            case "OPTIONS":
-                if (this.routes.contains(requestObject.requestLine.get("Path"))){
-                    String route = (String) requestObject.requestLine.get("Path");
 
-                    switch(route){
+                case "OPTIONS":
+
+                    switch (route) {
                         case "/method_options":
-                            String buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
+                            buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
                             buildResponse += "Allow: GET, HEAD, OPTIONS\r\n";
                             return buildResponse;
 
@@ -73,24 +63,16 @@ public class ServerResponse {
                             buildResponse = requestObject.requestLine.get("HTTPVersion") + " 200 OK\r\n";
                             buildResponse += "Allow: GET, HEAD, OPTIONS, PUT, POST\r\n";
                             return buildResponse;
-                        default:
+
+                            default:
                             throw new IllegalStateException("Unexpected value: " + route);
                     }
 
-                }else{
-                    return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
-                }
-
-            default:
-                return method + " not found!";
-
+                default:
+                    return method + " not found!";
+            }
+        } else{
+            return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
         }
     }
-
-
-
-
-
-
-
 }
