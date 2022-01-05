@@ -4,14 +4,65 @@ import java.util.*;
 
 public class ServerResponse {
     ServerRequest currentRequest;
+    HashMap<String, ArrayList> routeList;
     String response;
     ArrayList<String> routes;
 
-    public ServerResponse(ServerRequest request, ArrayList<String> routeList) {
+    public ServerResponse(ServerRequest request, HashMap<String, ArrayList> routeList) {
         currentRequest = request;
-        routes  = routeList;
+        routeList = routeList;
+        routes  = new ArrayList<>(routeList.keySet());
 
         response = routeResponse(request);
+    }
+
+    interface RequestFunction{
+        String run(ServerRequest object);
+    }
+
+    private String checkForRoute (ServerRequest requestObject){
+        String route = (String) requestObject.requestLine.get("Path");
+
+        if (!this.routes.contains(route)){
+            return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
+        } else{
+            return "";
+        }
+
+    }
+
+    private String checkIfHeadersAllow(ServerRequest requestObject) {
+        String method = (String) requestObject.requestLine.get("Method");
+        String route = (String) requestObject.requestLine.get("Path");
+        ArrayList<String> allowedHeaders = (ArrayList<String>) routeList.get(route);
+
+        if (!allowedHeaders.contains(method)){
+            String buildResponse = requestObject.requestLine.get("HTTPVersion") + " 405 Method Not Allowed\r\n";
+            buildResponse += "Allow: " + "\r\n";
+            return buildResponse;
+        } else {
+            return "";
+        }
+    }
+
+    private String checkForRedirect(ServerRequest requestObject){
+        String route = (String) requestObject.requestLine.get("Path");
+
+        if (route.equals("/redirect")){
+            String buildResponse;
+
+            buildResponse = requestObject.requestLine.get("HTTPVersion") + " 301 Moved Permanently\r\n";
+            buildResponse += "Location: http://127.0.0.1:5000/simple_get\r\n";
+
+            return buildResponse;
+        }else{
+            return  "";
+        }
+    }
+
+    private String returnResponse(ServerRequest requestObject){
+//        RequestFunction routeCheck = this.checkForRoute();
+        return "";
     }
 
     private String routeResponse(ServerRequest requestObject) {
