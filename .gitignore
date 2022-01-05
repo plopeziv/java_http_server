@@ -4,6 +4,5 @@
           # Ignore Gradle build output directory
           app/build
 
-
           *.class
           .DS_Store
