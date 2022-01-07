@@ -27,8 +27,6 @@ public class GreetServer implements Runnable {
 
         while (true){
             try(Socket clientSocket = serverSocket.accept()){
-                System.out.println("Client socket " + clientSocket.toString());
-
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -74,8 +72,8 @@ public class GreetServer implements Runnable {
         simpleGetMethods.add("GET");
         simpleGetMethods.add("HEAD");
         simpleGetMethods.add("OPTIONS");
-        routeInterface simpleGet  = (String firstLine, String headers, String body) ->{
-            return firstLine + "\r\n" + headers + "\r\n\r\n";
+        routeInterface simpleGet  = (String HTTPVersion, String headers, String body) ->{
+            return HTTPVersion + " 200 OK\r\n" + headers + "\r\n\r\n";
         };
 
         startupList.put("/simple_get", new RouteObject( "/simple_get", simpleGetMethods, simpleGet));
@@ -85,8 +83,8 @@ public class GreetServer implements Runnable {
         simpleGetWithBodyMethods.add("GET");
         simpleGetWithBodyMethods.add("HEAD");
         simpleGetWithBodyMethods.add("OPTIONS");
-        routeInterface simpleGetWithBody = (String firstLine, String headers, String body) -> {
-            return firstLine + "\r\n" + headers + "\r\n\r\n" + body;
+        routeInterface simpleGetWithBody = (String HTTPVersion, String headers, String body) -> {
+            return HTTPVersion + " 200 OK\r\n" + headers + "\r\n" + "Hello World";
         };
 
         startupList.put("/simple_get_with_body", new RouteObject("/simple_get_with_body",

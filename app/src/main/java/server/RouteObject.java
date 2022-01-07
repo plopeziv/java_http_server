@@ -3,7 +3,7 @@ package server;
 import java.util.*;
 
 interface routeInterface{
-    String getResponse(String firstLine, String headers, String method);
+    String getResponse(String HTTPVersion, String headers, String body);
 }
 
 public class RouteObject {
@@ -17,8 +17,8 @@ public class RouteObject {
         this.objectResponse = response;
     }
 
-    public String getObjectResponse(String firstLine, String headers, String body){
-        return this.objectResponse.getResponse(firstLine, headers, body);
+    public String getObjectResponse(String HTTPVersion, String headers, String body){
+        return this.objectResponse.getResponse(HTTPVersion, headers, body);
     }
 
 }
