@@ -19,7 +19,7 @@ public class GreetServer implements Runnable {
 
     public GreetServer(int port){
         this.portNumber = port;
-        this.routeList =  this.constructRouteList();
+        this.routeList =  new RouteList().startupList;
     }
 
     public void start(int port) throws IOException {
@@ -63,34 +63,6 @@ public class GreetServer implements Runnable {
         out.close();
         clientSocket.close();
         serverSocket.close();
-    }
-
-    private HashMap<String, RouteObject> constructRouteList() {
-        HashMap<String, RouteObject> startupList = new HashMap<>();
-
-        ArrayList<String> simpleGetMethods = new ArrayList<>();
-        simpleGetMethods.add("GET");
-        simpleGetMethods.add("HEAD");
-        simpleGetMethods.add("OPTIONS");
-        routeInterface simpleGet  = (String HTTPVersion, String headers, String body) ->{
-            return HTTPVersion + " 200 OK\r\n" + headers + "\r\n\r\n";
-        };
-
-        startupList.put("/simple_get", new RouteObject( "/simple_get", simpleGetMethods, simpleGet));
-
-
-        ArrayList<String> simpleGetWithBodyMethods = new ArrayList<>();
-        simpleGetWithBodyMethods.add("GET");
-        simpleGetWithBodyMethods.add("HEAD");
-        simpleGetWithBodyMethods.add("OPTIONS");
-        routeInterface simpleGetWithBody = (String HTTPVersion, String headers, String body) -> {
-            return HTTPVersion + " 200 OK\r\n" + headers + "\r\n" + "Hello World";
-        };
-
-        startupList.put("/simple_get_with_body", new RouteObject("/simple_get_with_body",
-                simpleGetWithBodyMethods, simpleGetWithBody));
-
-        return startupList;
     }
 
 }

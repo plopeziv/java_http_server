@@ -17,18 +17,12 @@ public class ServerResponseTest {
         ArrayList<String> availableMethods = new ArrayList<>(
                 Arrays.asList("GET", "HEAD", "OPTIONS"));
 
-        routeInterface simpleGet = (String firstLine, String headers, String body) ->
+        RouteInterface simpleGet = (String firstLine, String headers, String body) ->
                 firstLine + " 200 OK\r\n" + headers + "";
 
         testRoutes.put("/simple_get",
                 new RouteObject( "/simple_get", availableMethods, simpleGet));
-
-        //  End of Route Lists
     }
-
-
-
-
 
     @Test
     public void Server_response_sets_attributes() throws IOException {

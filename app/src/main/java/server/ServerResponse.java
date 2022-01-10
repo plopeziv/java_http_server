@@ -23,7 +23,7 @@ public class ServerResponse {
         RouteObject obj = this.routeList.get(routePath);
 
         if (obj != null){
-            return obj.getObjectResponse(routeVersion, this.getHeaders(), "Response");
+            return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
         } else {
             return routeVersion +  " 404 Not Found\r\n";
         }

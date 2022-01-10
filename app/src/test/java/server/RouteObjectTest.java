@@ -18,7 +18,7 @@ public class RouteObjectTest {
         methods.add("Java");
         methods.add("Why?");
 
-        routeInterface routeResponse = (String firstLine, String headers, String body) ->
+        RouteInterface routeResponse = (String firstLine, String headers, String body) ->
                 "Because it be that way sometimes";
 
         RouteObject object = new RouteObject(route, methods, routeResponse);
@@ -36,7 +36,7 @@ public class RouteObjectTest {
         methods.add("Java");
         methods.add("Why?");
 
-        routeInterface routeResponse = (String firstLine, String headers, String body) ->
+        RouteInterface routeResponse = (String firstLine, String headers, String body) ->
                 "Because it be that way sometimes";
 
         RouteObject object = new RouteObject(route, methods, routeResponse);
@@ -55,7 +55,7 @@ public class RouteObjectTest {
         methods.add("Java");
         methods.add("Why?");
 
-        routeInterface routeResponse = (String firstLine, String headers, String body) -> {
+        RouteInterface routeResponse = (String firstLine, String headers, String body) -> {
             System.out.println(firstLine + "\r\n" + headers + "\r\n\r\n" + body);
             return firstLine + "\r\n" + headers + "\r\n\r\n" + body;
         };

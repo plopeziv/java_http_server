@@ -66,7 +66,7 @@ public class ServerRequest {
     private String createBody(HashMap<String, String> headers){
         String var = headers.get("Content-Length");
         if (Integer.parseInt(var.trim()) != 0){
-            return "Hello World";
+            return "some body";
         } else{
             return "";
         }

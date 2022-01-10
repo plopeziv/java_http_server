@@ -2,16 +2,16 @@ package server;
 
 import java.util.*;
 
-interface routeInterface{
+interface RouteInterface {
     String getResponse(String HTTPVersion, String headers, String body);
 }
 
 public class RouteObject {
     String route;
     ArrayList<String> methods;
-    routeInterface objectResponse;
+    RouteInterface objectResponse;
 
-    public RouteObject(String objectRoute, ArrayList<String> objectHeaders, routeInterface response){
+    public RouteObject(String objectRoute, ArrayList<String> objectHeaders, RouteInterface response){
         this.route = objectRoute;
         this.methods = objectHeaders;
         this.objectResponse = response;
