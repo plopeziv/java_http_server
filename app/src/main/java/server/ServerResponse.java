@@ -25,7 +25,7 @@ public class ServerResponse {
         if (obj != null){
             return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
         } else {
-            return routeVersion +  " 404 Not Found\r\n";
+            return routeVersion +  " 404 Not Found\r\n\r\n";
         }
 
 

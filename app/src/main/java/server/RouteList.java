@@ -28,7 +28,7 @@ public class RouteList {
 
         ArrayList<String> redirectMethods = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
         RouteInterface redirect  = (String HTTPVersion, String headers, String body) ->
-                HTTPVersion + " 301 Moved Permanently\r\n" + "Location: http://127.0.0.1:5000/simple_get\r\n";
+                HTTPVersion + " 301 Moved Permanently\r\n" + "Location: http://127.0.0.1:5000/simple_get\r\n\r\n";
 
         startupList.put("/redirect",
                 new RouteObject( "/redirect", redirectMethods, redirect));

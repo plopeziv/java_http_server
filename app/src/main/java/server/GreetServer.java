@@ -41,9 +41,9 @@ public class GreetServer implements Runnable {
                 System.out.println("===== Response =====");
 
                 ServerResponse myResponse = new ServerResponse(myRequest, this.routeList);
-                System.out.println(myResponse.response);
+                System.out.print(myResponse.response);
 //
-                out.println(myResponse.response);
+                out.printf(myResponse.response);
 
             }
         }
