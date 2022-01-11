@@ -19,16 +19,26 @@ public class ServerResponse {
     private String returnResponse(ServerRequest requestObject){
         String routeVersion = String.valueOf(requestObject.requestLine.get("HTTPVersion"));
         String routePath = String.valueOf(requestObject.requestLine.get("Path"));
+        String response;
 
+        response = this.returnOriginalResponse(routeVersion, routePath);
+
+        return response;
+
+    }
+
+    private String returnOriginalResponse(String routeVersion, String routePath){
         Route obj = this.routeList.get(routePath);
 
         if (obj != null){
-            return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
+            if (checkIfMethodIsAllowed(this.currentRequest) != ""){
+                return checkIfMethodIsAllowed(this.currentRequest);
+            } else{
+                return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
+            }
         } else {
             return routeVersion +  " 404 Not Found\r\n\r\n";
         }
-
-
     }
 
     private String getHeaders(){
@@ -43,7 +53,7 @@ public class ServerResponse {
     }
 
 
-    public String checkIfHeadersAllow(ServerRequest requestObject) {
+    public String checkIfMethodIsAllowed(ServerRequest requestObject) {
         String method = requestObject.requestLine.get("Method");
         String route = requestObject.requestLine.get("Path");
         ArrayList<String> allowedHeaders = routeList.get(route).methods;
