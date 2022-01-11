@@ -31,10 +31,10 @@ public class RouteListTest {
         String route = "/new_route";
         ArrayList<String> headers = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
 
-        RouteInterface behavior = (String HTTPVersion, String info, String body) ->
+        RouteBehavior behavior = (String HTTPVersion, String info, String body) ->
                 HTTPVersion + " 200 OK\r\n" + info + "\r\n" + "Hello World";
 
-        RouteObject object = new RouteObject(route, headers, behavior);
+        Route object = new Route(route, headers, behavior);
 
         list.AddRoute(route, object);
 

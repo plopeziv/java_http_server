@@ -3,48 +3,47 @@ package server;
 import java.util.*;
 
 public class RouteList {
-    HashMap<String, RouteObject> startupList;
+    HashMap<String, Route> startupList;
 
     public RouteList() {
         this.startupList = constructRouteList();
     }
 
-    private HashMap<String, RouteObject> constructRouteList() {
-        HashMap<String, RouteObject> startupList = new HashMap<>();
+    private HashMap<String, Route> constructRouteList() {
+        HashMap<String, Route> startupList = new HashMap<>();
 
         ArrayList<String> simpleGetMethods = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
-        RouteInterface simpleGet  = (String HTTPVersion, String headers, String body) ->
-                HTTPVersion + " 200 OK\r\n" + headers + "\r\n";
+        RouteBehavior simpleGet  = (String HTTPVersion, String headers, String body) ->
+                HTTPVersion + " 200 OK\r\n" + headers + "\r\n\r\n";
 
-        startupList.put("/simple_get", new RouteObject( "/simple_get", simpleGetMethods, simpleGet));
+        startupList.put("/simple_get", new Route( "/simple_get", simpleGetMethods, simpleGet));
 
 
         ArrayList<String> simpleGetWithBodyMethods = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
-        RouteInterface simpleGetWithBody  = (String HTTPVersion, String headers, String body) ->
-                HTTPVersion + " 200 OK\r\n" + "\r\nHello world";
+        RouteBehavior simpleGetWithBody = (String HTTPVersion, String headers, String body) ->
+                HTTPVersion + " 200 OK\r\n" + headers + "\r\n" + "Hello World";
 
-        startupList.put("/simple_get_with_body",
-                new RouteObject( "/simple_get_with_body", simpleGetWithBodyMethods, simpleGetWithBody));
+        startupList.put("/simple_get_with_body", new Route("/simple_get_with_body",
+                simpleGetWithBodyMethods, simpleGetWithBody));
 
-        ArrayList<String> redirectMethods = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
-        RouteInterface redirect  = (String HTTPVersion, String headers, String body) ->
-                HTTPVersion + " 301 Moved Permanently\r\n" + "Location: http://127.0.0.1:5000/simple_get\r\n\r\n";
+        ArrayList<String> methodOptionsMethods = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
+        RouteBehavior methodOptions = (String HTTPVersion, String headers, String body) ->
+                HTTPVersion + " 200 OK\r\n" + "Allow: GET, HEAD, OPTIONS";
 
-        startupList.put("/redirect",
-                new RouteObject( "/redirect", redirectMethods, redirect));
+        startupList.put("/method_options", new Route("/method_options", methodOptionsMethods,
+                methodOptions));
 
-        ArrayList<String> echoBodyMethods = new ArrayList<>(Arrays.asList("POST", "OPTIONS"));
-        RouteInterface echoBody  = (String HTTPVersion, String headers, String body) ->
-                HTTPVersion + " 200 OK\r\n" + "\r\n" + body;
+        ArrayList<String> methodOptionsTwoMethods = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS", "PUT", "POST"));
+        RouteBehavior methodOptionsTwo = (String HTTPVersion, String headers, String body) ->
+                HTTPVersion + " 200 OK\r\n" + "Allow: GET, HEAD, OPTIONS, PUT, POST";
 
-        startupList.put("/echo_body",
-                new RouteObject( "/echo_body", echoBodyMethods, echoBody));
-
+        startupList.put("/method_options2", new Route("/method_options2", methodOptionsTwoMethods,
+                methodOptionsTwo));
 
         return startupList;
     }
 
-    public void AddRoute(String route, RouteObject object){
+    public void AddRoute(String route, Route object){
         this.startupList.put(route, object);
     }
 

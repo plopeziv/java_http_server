@@ -10,18 +10,18 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public class ServerResponseTest {
-    static HashMap<String, RouteObject> testRoutes = new HashMap<>();
+    static HashMap<String, Route> testRoutes = new HashMap<>();
 
     @Before
     public void testSetup() {
         ArrayList<String> availableMethods = new ArrayList<>(
                 Arrays.asList("GET", "HEAD", "OPTIONS"));
 
-        RouteInterface simpleGet = (String firstLine, String headers, String body) ->
+        RouteBehavior simpleGet = (String firstLine, String headers, String body) ->
                 firstLine + " 200 OK\r\n" + headers + "";
 
         testRoutes.put("/simple_get",
-                new RouteObject( "/simple_get", availableMethods, simpleGet));
+                new Route( "/simple_get", availableMethods, simpleGet));
     }
 
     @Test

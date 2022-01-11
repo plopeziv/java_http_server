@@ -4,11 +4,11 @@ import java.util.*;
 
 public class ServerResponse {
     ServerRequest currentRequest;
-    HashMap<String, RouteObject> routeList;
+    HashMap<String, Route> routeList;
     String response;
     ArrayList<String> routes;
 
-    public ServerResponse(ServerRequest request, HashMap<String, RouteObject> routeList) {
+    public ServerResponse(ServerRequest request, HashMap<String, Route> routeList) {
         this.currentRequest = request;
         this.routeList = routeList;
         this.routes  = new ArrayList<>(routeList.keySet());
@@ -20,7 +20,7 @@ public class ServerResponse {
         String routeVersion = String.valueOf(requestObject.requestLine.get("HTTPVersion"));
         String routePath = String.valueOf(requestObject.requestLine.get("Path"));
 
-        RouteObject obj = this.routeList.get(routePath);
+        Route obj = this.routeList.get(routePath);
 
         if (obj != null){
             return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
@@ -41,16 +41,7 @@ public class ServerResponse {
 
         return headerList.toString();
     }
-///    private String checkForRoute (ServerRequest requestObject){
-//        String route = (String) requestObject.requestLine.get("Path");
-//
-//        if (!this.routes.contains(route)){
-//            return requestObject.requestLine.get("HTTPVersion") + " 404 Not Found\r\n";
-//        } else{
-//            return "";
-//        }
-//
-//    }
+
 
 //    private String checkIfHeadersAllow(ServerRequest requestObject) {
 //        String method = (String) requestObject.requestLine.get("Method");
