@@ -87,9 +87,54 @@ public class ServerResponseTest {
 
         System.out.println(testResponse);
 
-        String simpleGetResponse = "HTTP/1.1 404 Not Found\r\n";
+        String simpleGetResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
 
         assertEquals(simpleGetResponse, testResponse.response);
+    }
+
+    @Test
+    public void Check_headers_returns_header_not_allowed() throws IOException {
+
+        ServerRequest testRequest;
+
+        String simulatedRequest = "POST /simple_get HTTP/1.1\r\n" +
+                "Connection: close\r\n" + "Host: 127.0.0.1:5000\r\n" +
+                "User-Agent: http.rb/4.3.0\r\n" + "Content-Length: 8\r\n";
+
+        InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
+
+        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
+
+        testRequest = new ServerRequest(bufferedRequest);
+
+        ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
+
+        String headerCheck = "HTTP/1.1 405 Method Not Allowed\r\n" +
+        "Allow: GET, HEAD, OPTIONS\r\n\r\n";
+
+        assertEquals(headerCheck, testResponse.checkIfHeadersAllow(testRequest));
+    }
+
+    @Test
+    public void Check_headers_returns_empty_string() throws IOException {
+
+        ServerRequest testRequest;
+
+        String simulatedRequest = "GET /simple_get HTTP/1.1\r\n" +
+                "Connection: close\r\n" + "Host: 127.0.0.1:5000\r\n" +
+                "User-Agent: http.rb/4.3.0\r\n" + "Content-Length: 8\r\n";
+
+        InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
+
+        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
+
+        testRequest = new ServerRequest(bufferedRequest);
+
+        ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
+
+        String headerCheck = "";
+
+        assertEquals(headerCheck, testResponse.checkIfHeadersAllow(testRequest));
     }
 
 }
