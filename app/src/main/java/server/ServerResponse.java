@@ -30,6 +30,11 @@ public class ServerResponse {
                     UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
         }
 
+        if (requestObject.requestLine.get("Method").equals("HEAD")){
+            int breakIndex = response.indexOf("\r\n\r\n");
+            response = response.substring(0, breakIndex) + "\r\n\r\n";
+        }
+
         return response;
 
     }
@@ -38,7 +43,7 @@ public class ServerResponse {
         Route obj = this.routeList.get(routePath);
 
         if (obj != null){
-            if (checkIfMethodIsAllowed(this.currentRequest) != ""){
+            if (!checkIfMethodIsAllowed(this.currentRequest).equals("")){
                 return checkIfMethodIsAllowed(this.currentRequest);
             } else{
                 return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
@@ -84,7 +89,7 @@ public class ServerResponse {
             unpackedHeaders.append(", ");
         }
 
-        if ((unpackedHeaders != null) && (unpackedHeaders.length() >1 )){
+        if (unpackedHeaders.length() >1){
             unpackedHeaders = new StringBuilder(unpackedHeaders.substring(0, unpackedHeaders.length() - 2));
         }
 
