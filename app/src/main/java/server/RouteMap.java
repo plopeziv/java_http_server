@@ -38,7 +38,7 @@ public class RouteMap {
 
         ArrayList<String> headRequestMethods = new ArrayList<>(Arrays.asList("HEAD", "OPTIONS"));
         RouteBehavior headRequest = (String HTTPVersion, String headers, String body) ->
-                HTTPVersion + " 200 OK\r\n" + headers + "\r\n\r\n";
+                HTTPVersion + " 200 OK\r\n" + headers + "\r\ndummy body";
 
         startupList.put("/head_request", new Route("/head_request", headRequestMethods,
                 headRequest));

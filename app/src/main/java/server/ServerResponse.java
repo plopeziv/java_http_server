@@ -30,6 +30,11 @@ public class ServerResponse {
                     UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
         }
 
+        if (requestObject.requestLine.get("Method").equals("HEAD")){
+            int breakIndex = response.indexOf("\r\n\r\n");
+            response = response.substring(0, breakIndex) + "\r\n\r\n";
+        }
+
         return response;
 
     }
