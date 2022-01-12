@@ -23,6 +23,13 @@ public class ServerResponse {
 
         response = this.returnOriginalResponse(routeVersion, routePath);
 
+        if (requestObject.requestLine.get("Method").equals("OPTIONS")){
+            ArrayList<String> allowedHeaders = routeList.get(routePath).methods;
+            int breakIndex = response.indexOf("\r\n");
+            response = response.substring(0, breakIndex) + "\r\n" +
+                    UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
+        }
+
         return response;
 
     }
