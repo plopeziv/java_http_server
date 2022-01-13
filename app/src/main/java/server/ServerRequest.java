@@ -23,7 +23,8 @@ public class ServerRequest {
 
             requestLine = this.createRequestLine(requestLines);
             headers  = this.createHeaders(requestLines);
-            body = this.createBody(this.headers);
+            body = this.createBody();
+//            body = this.createBody(this.headers);
 
     }
 
@@ -66,7 +67,8 @@ public class ServerRequest {
         return headers;
     }
 
-    private String createBody(HashMap<String, String> headers) throws IOException {
+    private String createBody(){
+//private String createBody(HashMap<String, String> headers){
 //        String var = headers.get("Content-Length");
 //        StringBuilder assembledBody = "";
 

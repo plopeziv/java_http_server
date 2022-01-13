@@ -66,20 +66,20 @@ public class ServerRequestTest {
         assertEquals("SoMe BoDy", testRequest.body);
     }
 
-    @Test
-    public void createRequestLine_with_body2() throws IOException {
-        String simulatedRequest = "OPTIONS /method_options2 HTTP/1.1\r\n" +
-                "Connection: close\r\n" +
-                "Host: 127.0.0.1:5000\r\n" +
-                "User-Agent: http.rb/4.3.0\r\n" +
-                "Content-Length: 9\r\n" +
-                "\r\n"+
-                "SoMe BoDy";
-        InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
-        byte[] placeBuffer= new byte[9];
-        int x = streamRequest.read(placeBuffer, 0, 9);
-
-    }
+//    @Test
+//    public void createRequestLine_with_body2() throws IOException {
+//        String simulatedRequest = "OPTIONS /method_options2 HTTP/1.1\r\n" +
+//                "Connection: close\r\n" +
+//                "Host: 127.0.0.1:5000\r\n" +
+//                "User-Agent: http.rb/4.3.0\r\n" +
+//                "Content-Length: 9\r\n" +
+//                "\r\n"+
+//                "SoMe BoDy";
+//        InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
+//        byte[] placeBuffer= new byte[9];
+//        int x = streamRequest.read(placeBuffer, 0, 9);
+//
+//    }
 
     @Test
     public void createHeaders_returns_headers_hash() throws IOException {

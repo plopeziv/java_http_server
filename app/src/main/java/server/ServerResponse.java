@@ -95,10 +95,7 @@ public class ServerResponse {
             unpackedHeaders.append(", ");
         }
 
-
-        if ((unpackedHeaders != null) && (unpackedHeaders.length() >1 )){
-            unpackedHeaders = new StringBuilder(unpackedHeaders.substring(0, unpackedHeaders.length() - 2));
-        }
+        unpackedHeaders = new StringBuilder(unpackedHeaders.substring(0, unpackedHeaders.length() - 2));
 
         return String.valueOf(unpackedHeaders);
     }
