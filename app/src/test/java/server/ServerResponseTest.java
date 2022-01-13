@@ -34,9 +34,7 @@ public class ServerResponseTest {
 
         InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
 
-        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
-
-        testRequest = new ServerRequest(bufferedRequest);
+        testRequest = new ServerRequest(streamRequest);
 
         ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
 
@@ -54,9 +52,7 @@ public class ServerResponseTest {
 
         InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
 
-        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
-
-        testRequest = new ServerRequest(bufferedRequest);
+        testRequest = new ServerRequest(streamRequest);
 
         ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
 
@@ -79,9 +75,7 @@ public class ServerResponseTest {
 
         InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
 
-        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
-
-        testRequest = new ServerRequest(bufferedRequest);
+        testRequest = new ServerRequest(streamRequest);
 
         ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
 
@@ -103,16 +97,14 @@ public class ServerResponseTest {
 
         InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
 
-        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
-
-        testRequest = new ServerRequest(bufferedRequest);
+        testRequest = new ServerRequest(streamRequest);
 
         ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
 
         String headerCheck = "HTTP/1.1 405 Method Not Allowed\r\n" +
         "Allow: GET, HEAD, OPTIONS\r\n\r\n";
 
-        assertEquals(headerCheck, testResponse.checkIfHeadersAllow(testRequest));
+        assertEquals(headerCheck, testResponse.checkIfMethodIsAllowed(testRequest));
     }
 
     @Test
@@ -126,15 +118,13 @@ public class ServerResponseTest {
 
         InputStream streamRequest = new ByteArrayInputStream(simulatedRequest.getBytes(StandardCharsets.UTF_8));
 
-        BufferedReader bufferedRequest = new BufferedReader(new InputStreamReader(streamRequest));
-
-        testRequest = new ServerRequest(bufferedRequest);
+        testRequest = new ServerRequest(streamRequest);
 
         ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
 
         String headerCheck = "";
 
-        assertEquals(headerCheck, testResponse.checkIfHeadersAllow(testRequest));
+        assertEquals(headerCheck, testResponse.checkIfMethodIsAllowed(testRequest));
     }
 
 }

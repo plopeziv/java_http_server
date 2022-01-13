@@ -19,20 +19,21 @@ public class ServerResponse {
     private String returnResponse(ServerRequest requestObject){
         String routeVersion = String.valueOf(requestObject.requestLine.get("HTTPVersion"));
         String routePath = String.valueOf(requestObject.requestLine.get("Path"));
+        String routeMethod = requestObject.requestLine.get("Method");
         String response;
 
         response = this.returnOriginalResponse(routeVersion, routePath);
 
-        if (requestObject.requestLine.get("Method").equals("OPTIONS")){
+        if (routeMethod.equals("HEAD")|| routeMethod.equals("OPTIONS")){
+            int breakIndex = response.indexOf("\r\n\r\n");
+            response = response.substring(0, breakIndex) + "\r\n\r\n";
+        }
+
+        if (routeMethod.equals("OPTIONS")){
             ArrayList<String> allowedHeaders = routeList.get(routePath).methods;
             int breakIndex = response.indexOf("\r\n");
             response = response.substring(0, breakIndex) + "\r\n" +
                     UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
-        }
-
-        if (requestObject.requestLine.get("Method").equals("HEAD")){
-            int breakIndex = response.indexOf("\r\n\r\n");
-            response = response.substring(0, breakIndex) + "\r\n\r\n";
         }
 
         return response;

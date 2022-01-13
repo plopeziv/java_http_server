@@ -11,7 +11,7 @@ public class GreetServer implements Runnable {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
-    private BufferedReader in;
+    private InputStream in;
 
     int portNumber;
     HashMap<String, Route> routeList;
@@ -28,7 +28,7 @@ public class GreetServer implements Runnable {
         while (true){
             try(Socket clientSocket = serverSocket.accept()){
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                in = clientSocket.getInputStream();
 
                 ServerRequest myRequest = new ServerRequest(in);
 
