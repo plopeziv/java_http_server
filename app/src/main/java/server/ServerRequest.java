@@ -68,18 +68,8 @@ public class ServerRequest {
     }
 
     private String createBody(){
-//private String createBody(HashMap<String, String> headers){
-//        String var = headers.get("Content-Length");
-//        StringBuilder assembledBody = "";
-
         int bodySize = Integer.parseInt(this.headers.get("Content-Length"));
         if (bodySize != 0){
-////            String bodyLine = this.inStream.read(, 0, 9);
-//            byte[] placeBuffer= new byte[9];
-//            int x = this.inStream.read(placeBuffer, 0, 9);
-//
-//            String str = new String(placeBuffer);
-
             return "some body";
         } else{
             return "";

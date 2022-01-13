@@ -19,43 +19,47 @@ public class ServerResponse {
     private String returnResponse(ServerRequest requestObject){
         String routeVersion = String.valueOf(requestObject.requestLine.get("HTTPVersion"));
         String routePath = String.valueOf(requestObject.requestLine.get("Path"));
-        String routeMethod = requestObject.requestLine.get("Method");
-        String response;
+        String routeMethod = String.valueOf(requestObject.requestLine.get("Path"));
 
-        response = this.returnOriginalResponse(routeVersion, routePath);
-
-        if (routeMethod.equals("HEAD")|| routeMethod.equals("OPTIONS")){
-            int breakIndex = response.indexOf("\r\n\r\n");
-            response = response.substring(0, breakIndex) + "\r\n\r\n";
-        }
-
-        if (routeMethod.equals("OPTIONS")){
-            ArrayList<String> allowedHeaders = routeList.get(routePath).methods;
-            int breakIndex = response.indexOf("\r\n");
-            response = response.substring(0, breakIndex) + "\r\n" +
-                    UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
-        }
-
-        if (requestObject.requestLine.get("Method").equals("HEAD")){
-            int breakIndex = response.indexOf("\r\n\r\n");
-            response = response.substring(0, breakIndex) + "\r\n\r\n";
-        }
+        response = this.assembleResponse(routeVersion, routePath, routeMethod);
 
         return response;
 
     }
 
-    private String returnOriginalResponse(String routeVersion, String routePath){
+    private String assembleResponse(String routeVersion, String routePath, String routeMethod){
         Route obj = this.routeList.get(routePath);
 
         if (obj != null){
             if (!checkIfMethodIsAllowed(this.currentRequest).equals("")){
                 return checkIfMethodIsAllowed(this.currentRequest);
             } else{
-                return obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
+               String response = obj.getObjectResponse(routeVersion, this.getHeaders(), this.currentRequest.body);
+
+               response = trimBody(response, routePath, routeMethod);
+               return response;
             }
         } else {
             return routeVersion +  " 404 Not Found\r\n\r\n";
+        }
+    }
+
+    private String trimBody(String originalResponse, String routePath, String routeMethod){
+
+        if (routeMethod.equals("HEAD")|| routeMethod.equals("OPTIONS")) {
+            int breakIndex = response.indexOf("\r\n\r\n");
+            response = response.substring(0, breakIndex) + "\r\n\r\n";
+
+            if (routeMethod.equals("OPTIONS")) {
+                ArrayList<String> allowedHeaders = routeList.get(routePath).methods;
+                response = response.substring(0, breakIndex) + "\r\n" +
+                        UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
+            }
+
+            return response;
+
+        } else {
+            return originalResponse;
         }
     }
 

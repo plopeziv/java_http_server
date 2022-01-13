@@ -55,10 +55,8 @@ public class RouteObjectTest {
         methods.add("Java");
         methods.add("Why?");
 
-        RouteBehavior routeResponse = (String firstLine, String headers, String body) -> {
-            System.out.println(firstLine + "\r\n" + headers + "\r\n\r\n" + body);
-            return firstLine + "\r\n" + headers + "\r\n\r\n" + body;
-        };
+        RouteBehavior routeResponse = (String firstLine, String headers, String body) ->
+                firstLine + "\r\n" + headers + "\r\n\r\n" + body;
 
         Route object = new Route(route, methods, routeResponse);
 
