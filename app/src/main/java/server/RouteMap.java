@@ -3,10 +3,10 @@ package server;
 import java.util.*;
 
 public class RouteMap {
-    HashMap<String, Route> startupList;
+    HashMap<String, Route> startupMap;
 
     public RouteMap() {
-        this.startupList = constructRouteList();
+        this.startupMap = constructRouteList();
     }
 
     private HashMap<String, Route> constructRouteList() {
@@ -73,11 +73,11 @@ public class RouteMap {
     }
 
     public void AddRoute(String route, Route object){
-        this.startupList.put(route, object);
+        this.startupMap.put(route, object);
     }
 
     public void RemoveRoute(String route){
-        this.startupList.remove(route);
+        this.startupMap.remove(route);
     }
 
 }

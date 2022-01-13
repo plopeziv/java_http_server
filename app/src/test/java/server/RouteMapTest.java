@@ -13,7 +13,7 @@ public class RouteMapTest {
     public void RouteListStartsWithStandardList() {
         RouteMap list = new RouteMap();
 
-        assertTrue(list.startupList.containsKey("/simple_get"));
+        assertTrue(list.startupMap.containsKey("/simple_get"));
     }
 
     @Test
@@ -21,7 +21,7 @@ public class RouteMapTest {
         RouteMap list = new RouteMap();
         list.RemoveRoute("/simple_get");
 
-        assertFalse(list.startupList.containsKey("/simple_get"));
+        assertFalse(list.startupMap.containsKey("/simple_get"));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class RouteMapTest {
 
         list.AddRoute(route, object);
 
-        assertTrue(list.startupList.containsKey(route));
+        assertTrue(list.startupMap.containsKey(route));
     }
 
 }

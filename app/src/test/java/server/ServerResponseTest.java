@@ -38,7 +38,7 @@ public class ServerResponseTest {
 
         ServerResponse testResponse = new ServerResponse(testRequest, testRoutes);
 
-        assertEquals(testResponse.routeList, testRoutes);
+        assertEquals(testResponse.routeMap, testRoutes);
         assertEquals(testResponse.routes, new ArrayList<>(Collections.singletonList("/simple_get")));
     }
 

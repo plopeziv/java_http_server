@@ -4,13 +4,13 @@ import java.util.*;
 
 public class ServerResponse {
     ServerRequest currentRequest;
-    HashMap<String, Route> routeList;
+    HashMap<String, Route> routeMap;
     String response;
     ArrayList<String> routes;
 
     public ServerResponse(ServerRequest request, HashMap<String, Route> routeList) {
         this.currentRequest = request;
-        this.routeList = routeList;
+        this.routeMap = routeList;
         this.routes  = new ArrayList<>(routeList.keySet());
 
         response = returnResponse(request);
@@ -28,7 +28,7 @@ public class ServerResponse {
     }
 
     private String assembleResponse(String routeVersion, String routePath, String routeMethod){
-        Route obj = this.routeList.get(routePath);
+        Route obj = this.routeMap.get(routePath);
 
         if (obj != null){
             if (!checkIfMethodIsAllowed(this.currentRequest).equals("")){
@@ -51,7 +51,7 @@ public class ServerResponse {
             response = response.substring(0, breakIndex) + "\r\n\r\n";
 
             if (routeMethod.equals("OPTIONS")) {
-                ArrayList<String> allowedHeaders = routeList.get(routePath).methods;
+                ArrayList<String> allowedHeaders = routeMap.get(routePath).methods;
                 response = response.substring(0, breakIndex) + "\r\n" +
                         UnpackHeaders(allowedHeaders) + response.substring(breakIndex);
             }
@@ -78,7 +78,7 @@ public class ServerResponse {
     public String checkIfMethodIsAllowed(ServerRequest requestObject) {
         String method = requestObject.requestLine.get("Method");
         String route = requestObject.requestLine.get("Path");
-        ArrayList<String> allowedHeaders = routeList.get(route).methods;
+        ArrayList<String> allowedHeaders = routeMap.get(route).methods;
 
         assert allowedHeaders != null;
 

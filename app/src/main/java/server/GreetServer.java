@@ -14,12 +14,12 @@ public class GreetServer implements Runnable {
     private InputStream in;
 
     int portNumber;
-    HashMap<String, Route> routeList;
+    HashMap<String, Route> routeMap;
 
 
     public GreetServer(int port){
         this.portNumber = port;
-        this.routeList =  new RouteMap().startupList;
+        this.routeMap =  new RouteMap().startupMap;
     }
 
     public void start(int port) throws IOException {
@@ -39,7 +39,7 @@ public class GreetServer implements Runnable {
                 System.out.println(myRequest.body);
                 System.out.println("===== Response =====");
 
-                ServerResponse myResponse = new ServerResponse(myRequest, this.routeList);
+                ServerResponse myResponse = new ServerResponse(myRequest, this.routeMap);
                 System.out.print(myResponse.response);
 
                 out.printf(myResponse.response);
