@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public class RouteListTest {
+public class RouteMapTest {
 
     @Test
     public void RouteListStartsWithStandardList() {

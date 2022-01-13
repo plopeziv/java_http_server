@@ -37,12 +37,11 @@ public class GreetServer implements Runnable {
                 System.out.println(myRequest.requestLine);
                 System.out.println(myRequest.headers);
                 System.out.println(myRequest.body);
-//
                 System.out.println("===== Response =====");
 
                 ServerResponse myResponse = new ServerResponse(myRequest, this.routeList);
                 System.out.print(myResponse.response);
-//
+
                 out.printf(myResponse.response);
 
             }
@@ -64,5 +63,4 @@ public class GreetServer implements Runnable {
         clientSocket.close();
         serverSocket.close();
     }
-
 }
