@@ -90,7 +90,8 @@ public class ServerResponse {
             unpackedHeaders.append(", ");
         }
 
-        if (unpackedHeaders.length() >1){
+
+        if ((unpackedHeaders != null) && (unpackedHeaders.length() >1 )){
             unpackedHeaders = new StringBuilder(unpackedHeaders.substring(0, unpackedHeaders.length() - 2));
         }
 
