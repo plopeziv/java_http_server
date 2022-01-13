@@ -14,12 +14,12 @@ public class GreetServer implements Runnable {
     private BufferedReader in;
 
     int portNumber;
-    HashMap routeList;
+    HashMap<String, Route> routeList;
 
 
     public GreetServer(int port){
         this.portNumber = port;
-        this.routeList =  new RouteList().startupList;
+        this.routeList =  new RouteMap().startupList;
     }
 
     public void start(int port) throws IOException {

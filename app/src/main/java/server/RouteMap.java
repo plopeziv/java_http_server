@@ -2,10 +2,10 @@ package server;
 
 import java.util.*;
 
-public class RouteList {
+public class RouteMap {
     HashMap<String, Route> startupList;
 
-    public RouteList() {
+    public RouteMap() {
         this.startupList = constructRouteList();
     }
 

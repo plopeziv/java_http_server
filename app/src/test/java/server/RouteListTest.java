@@ -11,14 +11,14 @@ public class RouteListTest {
 
     @Test
     public void RouteListStartsWithStandardList() {
-        RouteList list = new RouteList();
+        RouteMap list = new RouteMap();
 
         assertTrue(list.startupList.containsKey("/simple_get"));
     }
 
     @Test
     public void RouteListItemCanBeRemoved(){
-        RouteList list = new RouteList();
+        RouteMap list = new RouteMap();
         list.RemoveRoute("/simple_get");
 
         assertFalse(list.startupList.containsKey("/simple_get"));
@@ -26,7 +26,7 @@ public class RouteListTest {
 
     @Test
     public void RouteListItemCanBeAdded(){
-        RouteList list = new RouteList();
+        RouteMap list = new RouteMap();
 
         String route = "/new_route";
         ArrayList<String> headers = new ArrayList<>(Arrays.asList("GET", "HEAD", "OPTIONS"));
