@@ -7,8 +7,8 @@ import java.util.*;
 public class ServerRequest {
     BufferedReader in;
 
-    HashMap requestLine;
-    HashMap headers;
+    HashMap<String, String> requestLine;
+    HashMap<String, String> headers;
     String body;
     String requestLines;
 
@@ -25,15 +25,15 @@ public class ServerRequest {
     }
 
     private String assembleRequest() throws IOException {
-        String requestLines = "";
+        StringBuilder requestLines = new StringBuilder();
         String requestLine = in.readLine();
 
         while (requestLine != null && !requestLine.isEmpty()) {
-            requestLines += requestLine + "\r\n";
+            requestLines.append(requestLine).append("\r\n");
             requestLine = in.readLine();
         }
 
-        return requestLines;
+        return requestLines.toString();
     }
 
     private HashMap<String, String> createRequestLine(String requestLines){
@@ -50,7 +50,7 @@ public class ServerRequest {
     }
 
     private HashMap<String, String> createHeaders(String requestLines){
-        HashMap<String, String> headers = new HashMap<>();
+        HashMap<String, String> headers = new LinkedHashMap<>();
 
         String[] stringHeaders = requestLines.split("\r\n");
 
@@ -63,10 +63,10 @@ public class ServerRequest {
         return headers;
     }
 
-    private String createBody(HashMap headers){
-        String var = (String) headers.get("Content-Length");
+    private String createBody(HashMap<String, String> headers){
+        String var = headers.get("Content-Length");
         if (Integer.parseInt(var.trim()) != 0){
-            return "This is a body";
+            return "some body";
         } else{
             return "";
         }
