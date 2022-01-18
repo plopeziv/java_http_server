@@ -29,7 +29,6 @@ public class ServerResponse {
 
     private String assembleResponse(String routeVersion, String routePath, String routeMethod){
         Route obj = this.routeMap.get(routePath);
-
         if (obj != null){
             if (!checkIfMethodIsAllowed(this.currentRequest).equals("")){
                 return checkIfMethodIsAllowed(this.currentRequest);
@@ -46,7 +45,11 @@ public class ServerResponse {
     private String trimBody(String originalResponse, String routePath, String routeMethod){
         if (routeMethod.equals("HEAD") || routeMethod.equals("OPTIONS")){
             int breakIndex = originalResponse.indexOf("\r\n\r\n");
-            response = originalResponse.substring(0, breakIndex) + "\r\n\r\n";
+            response = originalResponse;
+
+            if(breakIndex != -1) {
+                response = originalResponse.substring(0, breakIndex) + "\r\n\r\n";
+            }
 
             if (routeMethod.equals("OPTIONS")){
                 ArrayList<String> allowedHeaders = routeMap.get(routePath).methods;
