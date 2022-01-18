@@ -24,7 +24,6 @@ public class ServerRequest {
             requestLine = this.createRequestLine(requestLines);
             headers  = this.createHeaders(requestLines);
             body = this.createBody();
-//            body = this.createBody(this.headers);
 
     }
 
