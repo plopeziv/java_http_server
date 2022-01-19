@@ -12,12 +12,10 @@ public class RouteObjectTest {
     @Test
     public void lambda_sets_attributes() {
         String route = "/test_route";
-
         ArrayList<String> methods = new ArrayList<>();
         methods.add("Why");
         methods.add("Java");
         methods.add("Why?");
-
         RouteBehavior routeResponse = (String firstLine, String headers, String body) ->
                 "Because it be that way sometimes";
 
@@ -30,12 +28,10 @@ public class RouteObjectTest {
     @Test
     public void lambda_runs_simple_function(){
         String route = "/test_route";
-
         ArrayList<String> methods = new ArrayList<>();
         methods.add("Why");
         methods.add("Java");
         methods.add("Why?");
-
         RouteBehavior routeResponse = (String firstLine, String headers, String body) ->
                 "Because it be that way sometimes";
 
@@ -43,22 +39,17 @@ public class RouteObjectTest {
 
         assertEquals(object.getObjectResponse("", "", ""),
                 "Because it be that way sometimes");
-
     }
 
     @Test
     public void lambda_runs_function_with_object() {
         String route = "/test_route";
-
         ArrayList<String> methods = new ArrayList<>();
         methods.add("Why");
         methods.add("Java");
         methods.add("Why?");
-
-        RouteBehavior routeResponse = (String firstLine, String headers, String body) -> {
-            System.out.println(firstLine + "\r\n" + headers + "\r\n\r\n" + body);
-            return firstLine + "\r\n" + headers + "\r\n\r\n" + body;
-        };
+        RouteBehavior routeResponse = (String firstLine, String headers, String body) ->
+                firstLine + "\r\n" + headers + "\r\n\r\n" + body;
 
         Route object = new Route(route, methods, routeResponse);
 

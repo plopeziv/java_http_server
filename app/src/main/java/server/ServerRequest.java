@@ -2,25 +2,28 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class ServerRequest {
     BufferedReader in;
+    InputStream inStream;
 
     HashMap<String, String> requestLine;
     HashMap<String, String> headers;
     String body;
     String requestLines;
 
-    public ServerRequest(BufferedReader in) throws IOException {
-
-            this.in = in;
+    public ServerRequest(InputStream in) throws IOException {
+            this.inStream = in;
+            this.in = new BufferedReader(new InputStreamReader(in));
 
             this.requestLines = this.assembleRequest();
 
             requestLine = this.createRequestLine(requestLines);
             headers  = this.createHeaders(requestLines);
-            body = this.createBody(this.headers);
+            body = this.createBody();
 
     }
 
@@ -63,9 +66,9 @@ public class ServerRequest {
         return headers;
     }
 
-    private String createBody(HashMap<String, String> headers){
-        String var = headers.get("Content-Length");
-        if (Integer.parseInt(var.trim()) != 0){
+    private String createBody(){
+        int bodySize = Integer.parseInt(this.headers.get("Content-Length"));
+        if (bodySize != 0){
             return "some body";
         } else{
             return "";

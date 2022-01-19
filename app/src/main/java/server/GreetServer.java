@@ -11,15 +11,15 @@ public class GreetServer implements Runnable {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
-    private BufferedReader in;
+    private InputStream in;
 
     int portNumber;
-    HashMap<String, Route> routeList;
+    HashMap<String, Route> routeMap;
 
 
     public GreetServer(int port){
         this.portNumber = port;
-        this.routeList =  new RouteMap().startupList;
+        this.routeMap =  new RouteMap().startupMap;
     }
 
     public void start(int port) throws IOException {
@@ -28,7 +28,7 @@ public class GreetServer implements Runnable {
         while (true){
             try(Socket clientSocket = serverSocket.accept()){
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                in = clientSocket.getInputStream();
 
                 ServerRequest myRequest = new ServerRequest(in);
 
@@ -39,7 +39,7 @@ public class GreetServer implements Runnable {
                 System.out.println(myRequest.body);
                 System.out.println("===== Response =====");
 
-                ServerResponse myResponse = new ServerResponse(myRequest, this.routeList);
+                ServerResponse myResponse = new ServerResponse(myRequest, this.routeMap);
                 System.out.print(myResponse.response);
 
                 out.printf(myResponse.response);
