@@ -52,11 +52,11 @@ public class ServerResponse {
             }
 
             if (routeMethod.equals("OPTIONS")){
-                ArrayList<String> allowedHeaders = routeMap.get(routePath).methods;
+                ArrayList<String> allowedMethods = routeMap.get(routePath).methods;
                 int optionsIndex = originalResponse.indexOf("\r\n");
 
                 response = response.substring(0, optionsIndex) + "\r\n" +
-                        UnpackHeaders(allowedHeaders) + response.substring(optionsIndex);
+                        unpackMethods(allowedMethods) + response.substring(optionsIndex);
             }
 
             return response;
@@ -81,29 +81,29 @@ public class ServerResponse {
     public String checkIfMethodIsAllowed(ServerRequest requestObject) {
         String method = requestObject.requestLine.get("Method");
         String route = requestObject.requestLine.get("Path");
-        ArrayList<String> allowedHeaders = routeMap.get(route).methods;
+        ArrayList<String> allowedMethods = routeMap.get(route).methods;
 
-        assert allowedHeaders != null;
+        assert allowedMethods != null;
 
-        if (!allowedHeaders.contains(method)){
+        if (!allowedMethods.contains(method)){
             String buildResponse = requestObject.requestLine.get("HTTPVersion") + " 405 Method Not Allowed\r\n";
-            buildResponse += UnpackHeaders(allowedHeaders) + "\r\n\r\n";
+            buildResponse += unpackMethods(allowedMethods) + "\r\n\r\n";
             return buildResponse;
         } else {
             return "";
         }
     }
 
-    private String UnpackHeaders(ArrayList<String> allowedHeaders) {
-        StringBuilder unpackedHeaders = new StringBuilder("Allow: ");
+    private String unpackMethods(ArrayList<String> allowedMethods) {
+        StringBuilder unpackedMethods = new StringBuilder("Allow: ");
 
-        for (String header : allowedHeaders) {
-            unpackedHeaders.append(header.toUpperCase(Locale.ROOT));
-            unpackedHeaders.append(", ");
+        for (String method : allowedMethods) {
+            unpackedMethods.append(method.toUpperCase(Locale.ROOT));
+            unpackedMethods.append(", ");
         }
 
-        unpackedHeaders = new StringBuilder(unpackedHeaders.substring(0, unpackedHeaders.length() - 2));
+        unpackedMethods = new StringBuilder(unpackedMethods.substring(0, unpackedMethods.length() - 2));
 
-        return String.valueOf(unpackedHeaders);
+        return String.valueOf(unpackedMethods);
     }
 }
